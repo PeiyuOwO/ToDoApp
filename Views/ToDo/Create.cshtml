@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model TodoApp.Models.TodoTask
+@{
+    var isCreate = string.Equals(ViewContext.RouteData.Values["action"]?.ToString(), "Create", StringComparison.OrdinalIgnoreCase);
+}
+<h2>@(isCreate ? "Add" : "Edit") Task</h2>
+
+@{
+    var actionName = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<form asp-action="@(isCreate ? "Create" : "Edit")" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Date"></label>
+        <input asp-for="Date" class="form-control" type="date" value="@Model?.Date.ToString("yyyy-MM-dd")" />
+
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Save</button>
+    <a asp-action="Index" class="btn btn-secondary mt-2">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <vc:validation-summary model-only="true" />
+}
